@@ -88,12 +88,9 @@ export const findXMatches = (puzzle: Puzzle): Match[] => {
           const topRight = puzzle[lineIndex - 1]?.[matchIndex + 1];
   
           if ((topLeft === "M" && bottomRight === "S") || (topLeft === "S" && bottomRight === "M")) {
-            if (bottomLeft === "M" && topRight === "S") {
+            if ((bottomLeft === "M" && topRight === "S") || (bottomLeft === "S" && topRight === "M")) {
               acc.push({ lineIndex, letterIndex: matchIndex }); 
-            } else if (bottomLeft === "S" && topRight === "M") {
-
-              acc.push({ lineIndex, letterIndex: matchIndex }); 
-            }
+            } 
           }
   
           counter++; 
