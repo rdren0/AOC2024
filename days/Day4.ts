@@ -9,10 +9,10 @@ console.log(fileContent);
 let counter = 0;
 const rows: string[] = fileContent.trim().split("\n");
 const numColumns = rows[0].length;
-type Puzzle = string[];
+export type Puzzle = string[];
 type Match = { lineIndex: number; letterIndex: number };
 
-const findMatches = (puzzle: Puzzle): Match[] => {
+export const findMatches = (puzzle: Puzzle): Match[] => {
   const regex = /(MAS)|(SAM)/g;
 
   const values: Match[] = puzzle.reduce<Match[]>((acc, line, lineIndex) => {
@@ -23,7 +23,7 @@ const findMatches = (puzzle: Puzzle): Match[] => {
       const match = regex.exec(line);
 
       if (match) {
-        acc.push({ lineIndex, letterIndex: match.index }); // Explicitly typed
+        acc.push({ lineIndex, letterIndex: match.index }); 
         counter++;
         letterIndex = match.index + 1;
       } else {
@@ -31,7 +31,7 @@ const findMatches = (puzzle: Puzzle): Match[] => {
       }
     }
     return acc;
-  }, []); // Explicitly typed accumulator
+  }, []);
   return values;
 };
 
@@ -41,7 +41,7 @@ const diagonalRight: string[] = rows
       line.split("").forEach((letter, letterIndex) => {
         const diagonalIndex = letterIndex + lineIndex;
         if (!acc[diagonalIndex]) acc[diagonalIndex] = [];
-        acc[diagonalIndex].push(letter); // Ensure this line matches the type
+        acc[diagonalIndex].push(letter); 
       });
       return acc;
     },
@@ -64,9 +64,48 @@ const diagonalLeft: string[] = rows
   )
   .map((line) => line.join(""));
 
-const leftMatches = findMatches(diagonalLeft);
-console.log("Left Diagonal Matches:", leftMatches);
+findMatches(diagonalLeft);
 
-const rightMatches = findMatches(diagonalRight);
-console.log("Right Diagonal Matches:", rightMatches);
-console.log("Total Matches:", counter);
+findMatches(diagonalRight);
+
+
+export const findXMatches = (puzzle: Puzzle): Match[] => {
+    const regex = /(A)/g;
+  
+    const values: Match[] = puzzle.reduce<Match[]>((acc, line, lineIndex) => {
+      let letterIndex = 0;
+  
+      while (letterIndex < line.length) {
+        regex.lastIndex = letterIndex;
+        const match = regex.exec(line);
+  
+        if (match) {
+          const matchIndex = match.index;
+  
+          const topLeft = puzzle[lineIndex - 1]?.[matchIndex - 1];
+          const bottomRight = puzzle[lineIndex + 1]?.[matchIndex + 1];
+          const bottomLeft = puzzle[lineIndex + 1]?.[matchIndex - 1];
+          const topRight = puzzle[lineIndex - 1]?.[matchIndex + 1];
+  
+          if ((topLeft === "M" && bottomRight === "S") || (topLeft === "S" && bottomRight === "M")) {
+            if (bottomLeft === "M" && topRight === "S") {
+              acc.push({ lineIndex, letterIndex: matchIndex }); 
+            } else if (bottomLeft === "S" && topRight === "M") {
+
+              acc.push({ lineIndex, letterIndex: matchIndex }); 
+            }
+          }
+  
+          counter++; 
+          letterIndex = matchIndex + 1; 
+        } else {
+          break;
+        }
+      }
+      return acc;
+    }, []);
+  
+    return values;
+  };
+
+console.log("Total Matches:", findXMatches(fileContent.trim().split("\n")).length);
