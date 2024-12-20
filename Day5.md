@@ -73,8 +73,6 @@ Of course, you'll need to be careful: the actual list of page ordering rules is 
 
 Determine which updates are already in the correct order. What do you get if you add up the middle page number from those correctly-ordered updates?
 
-
-
 --- Part Two ---
 While the Elves get to work printing the correctly-ordered updates, you have a little time to fix the rest of them.
 
