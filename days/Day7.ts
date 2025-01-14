@@ -21,9 +21,7 @@ const test = (result: number, numbers: number[]): boolean => {
 
   if (numbers.length < 2) {
     return result === numbers[0] ? true : false;
-  }
-
-  if (numbers.length === 2) {
+  } else if (numbers.length === 2) {
     return (
       addition === result || multiply === result || Number(concat) === result
     );
