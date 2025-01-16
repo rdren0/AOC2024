@@ -16,14 +16,16 @@ const patrolValues: any = {
   cLength: data.length,
 };
 
-data.forEach((row, rowIndex) => {
-  row.forEach((value, columnIndex) => {
-    if (value === "^") {
-      patrolValues["row"] = rowIndex;
-      patrolValues["column"] = columnIndex;
-    }
+const findStartingCoords = () =>
+  data.forEach((row, rowIndex) => {
+    row.forEach((value, columnIndex) => {
+      if (value === "^") {
+        patrolValues["row"] = rowIndex;
+        patrolValues["column"] = columnIndex;
+      }
+    });
   });
-});
+findStartingCoords();
 
 const patrol = () => {
   while (
