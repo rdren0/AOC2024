@@ -60,12 +60,11 @@ partOne(fileContent);
 
 export const partTwo = (fileContent: any) => {
   const data = fileContent.trim().split("");
-  /(\d)\1*/g;
+
   const newData = sort(data);
   let dataByString = newData.join("");
-  const groups = dataByString.match(/(\d)\1*/g);
-
   let newestString = dataByString;
+  const groups = dataByString.match(/(\d)\1*/g);
   groups.reverse().forEach((group: any) => {
     const regex = new RegExp(`(\\.){${group.length}}`);
     const matches = dataByString.match(regex);
@@ -75,10 +74,8 @@ export const partTwo = (fileContent: any) => {
         .split("")
         .reverse()
         .join("")
-        .replace(group, ".".repeat(group.length))
-        .split("")
-        .reverse()
-        .join("");
+        .replace(group, ".".repeat(group.length));
+      newestString = newestString.split("").reverse().join("");
     }
   });
 
@@ -91,7 +88,7 @@ export const partTwo = (fileContent: any) => {
     },
     0
   );
-
+  console.log(result);
   return result;
 };
 
